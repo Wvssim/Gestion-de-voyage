@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load booking_extras %}
+
+{% block title %}Admin Dashboard | Travel Booking Platform{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Admin Dashboard</h1>
+
+<div class="row mb-4">
+    <div class="col-md-3 mb-4">
+        <div class="card bg-primary text-white h-100 shadow">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase">Total Users</h6>
+                        <h1 class="display-4">{{ total_users }}</h1>
+                    </div>
+                    <i class="fas fa-users fa-3x opacity-50"></i>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a href="{% url 'admin_users' %}" class="text-white text-decoration-none">View Details</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card bg-success text-white h-100 shadow">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase">Total Travels</h6>
+                        <h1 class="display-4">{{ total_travels }}</h1>
+                    </div>
+                    <i class="fas fa-plane-departure fa-3x opacity-50"></i>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a href="{% url 'admin_travels' %}" class="text-white text-decoration-none">View Details</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card bg-info text-white h-100 shadow">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase">Total Bookings</h6>
+                        <h1 class="display-4">{{ total_bookings }}</h1>
+                    </div>
+                    <i class="fas fa-ticket-alt fa-3x opacity-50"></i>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a href="{% url 'admin_bookings' %}" class="text-white text-decoration-none">View Details</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card bg-warning text-white h-100 shadow">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase">Active Travels</h6>
+                        <h1 class="display-4">{{ active_travels }}</h1>
+                    </div>
+                    <i class="fas fa-calendar-check fa-3x opacity-50"></i>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a href="{% url 'admin_travels' %}" class="text-white text-decoration-none">View Details</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Booking Statistics</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Status</th>
+                                <th>Count</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stat in booking_stats %}
+                            <tr>
+                                <td>
+                                    <span class="badge {{ stat.status|status_badge }}">
+                                        {{ stat.status|title }}
+                                    </span>
+                                </td>
+                                <td>{{ stat.count }}</td>
+                                <td>
+                                    {% if total_bookings > 0 %}
+                                        {{ stat.count|floatformat:0 }}%
+                                    {% else %}
+                                        0%
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center">No booking data available</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Revenue Overview</h5>
+            </div>
+            <div class="card-body text-center">
+                <h1 class="display-3 text-primary mb-3">{{ revenue|format_price }}</h1>
+                <p class="lead">Total confirmed bookings revenue</p>
+                <a href="{% url 'admin_bookings' %}" class="btn btn-outline-primary mt-3">
+                    <i class="fas fa-chart-line me-2"></i> View All Bookings
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Popular Destinations</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Destination</th>
+                                <th>Bookings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for destination in popular_destinations %}
+                            <tr>
+                                <td>{{ destination.destination }}</td>
+                                <td>{{ destination.count }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="2" class="text-center">No destination data available</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    <a href="{% url 'admin_travels' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-plus-circle me-2 text-success"></i> Add New Travel
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="{% url 'admin_users' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-users-cog me-2 text-primary"></i> Manage Users
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="{% url 'admin_bookings' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-ticket-alt me-2 text-info"></i> View All Bookings
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="{% url 'admin:index' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-cogs me-2 text-secondary"></i> Django Admin
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

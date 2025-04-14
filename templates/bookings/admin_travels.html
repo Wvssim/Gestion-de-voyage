@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block title %}Travel Management | Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Travel Management</h1>
+    <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-primary">
+        <i class="fas fa-tachometer-alt me-2"></i> Back to Dashboard
+    </a>
+</div>
+
+<!-- Add New Travel Form -->
+<div class="card shadow mb-4">
+    <div class="card-header bg-white">
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#newTravelForm" aria-expanded="false">
+            <i class="fas fa-plus-circle me-2"></i> Add New Travel
+        </button>
+    </div>
+    <div class="collapse" id="newTravelForm">
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="id_name" class="form-label">Name</label>
+                        <input type="text" name="name" id="id_name" class="form-control {% if form.name.errors %}is-invalid{% endif %}" required>
+                        {% if form.name.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.name.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="id_destination" class="form-label">Destination</label>
+                        <input type="text" name="destination" id="id_destination" class="form-control {% if form.destination.errors %}is-invalid{% endif %}" required>
+                        {% if form.destination.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.destination.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_description" class="form-label">Description</label>
+                    <textarea name="description" id="id_description" class="form-control {% if form.description.errors %}is-invalid{% endif %}" rows="5" required></textarea>
+                    {% if form.description.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.description.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="id_start_date" class="form-label">Start Date</label>
+                        <input type="date" name="start_date" id="id_start_date" class="form-control {% if form.start_date.errors %}is-invalid{% endif %}" required>
+                        {% if form.start_date.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.start_date.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="id_end_date" class="form-label">End Date</label>
+                        <input type="date" name="end_date" id="id_end_date" class="form-control {% if form.end_date.errors %}is-invalid{% endif %}" required>
+                        {% if form.end_date.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.end_date.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="id_price" class="form-label">Price per Person ($)</label>
+                        <input type="number" name="price" id="id_price" class="form-control {% if form.price.errors %}is-invalid{% endif %}" min="0" step="0.01" required>
+                        {% if form.price.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.price.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <label for="id_total_seats" class="form-label">Total Seats</label>
+                        <input type="number" name="total_seats" id="id_total_seats" class="form-control {% if form.total_seats.errors %}is-invalid{% endif %}" min="1" required>
+                        {% if form.total_seats.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.total_seats.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <label for="id_available_seats" class="form-label">Available Seats</label>
+                        <input type="number" name="available_seats" id="id_available_seats" class="form-control {% if form.available_seats.errors %}is-invalid{% endif %}" min="0" required>
+                        {% if form.available_seats.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.available_seats.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="id_image_url" class="form-label">Image URL (optional)</label>
+                    <input type="url" name="image_url" id="id_image_url" class="form-control {% if form.image_url.errors %}is-invalid{% endif %}">
+                    {% if form.image_url.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.image_url.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <div class="form-text">Enter a URL for an image to represent this travel.</div>
+                </div>
+                
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus-circle me-2"></i> Create Travel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Travel List -->
+<div class="card shadow">
+    <div class="card-header bg-white">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">All Travels</h5>
+            <span class="badge bg-primary">{{ travels|length }} Travels</span>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Destination</th>
+                        <th>Dates</th>
+                        <th>Price</th>
+                        <th>Seats (Available/Total)</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for travel in travels %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'travel_detail' travel.id %}">
+                                {{ travel.name }}
+                            </a>
+                        </td>
+                        <td>{{ travel.destination }}</td>
+                        <td>{{ travel.start_date|date:"M d" }} - {{ travel.end_date|date:"M d, Y" }}</td>
+                        <td>${{ travel.price }}</td>
+                        <td>
+                            {{ travel.available_seats }}/{{ travel.total_seats }}
+                            {% if travel.is_fully_booked %}
+                            <span class="badge bg-danger ms-1">Fully Booked</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if travel.is_past %}
+                            <span class="badge bg-secondary">Past</span>
+                            {% else %}
+                            <span class="badge bg-success">Active</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'admin_travel_edit' travel.id %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'admin_travel_delete' travel.id %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-4">
+                            <div class="mb-3">
+                                <i class="fas fa-plane-departure fa-3x text-muted"></i>
+                            </div>
+                            <p class="mb-0">No travels found in the system</p>
+                            <button class="btn btn-primary mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#newTravelForm" aria-expanded="false">
+                                <i class="fas fa-plus-circle me-2"></i> Add Your First Travel
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

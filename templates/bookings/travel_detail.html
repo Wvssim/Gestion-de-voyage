@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load booking_extras %}
+
+{% block title %}{{ travel.name }} | Travel Booking Platform{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            {% if travel.image_url %}
+            <img src="{{ travel.image_url }}" class="card-img-top" alt="{{ travel.name }}">
+            {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
+                <i class="fas fa-mountain fa-5x text-muted"></i>
+            </div>
+            {% endif %}
+            
+            <div class="card-body">
+                <h1 class="card-title mb-3">{{ travel.name }}</h1>
+                <h5 class="text-muted mb-4">
+                    <i class="fas fa-map-marker-alt me-2"></i> {{ travel.destination }}
+                </h5>
+                
+                <div class="mb-4">
+                    <h5 class="mb-3">Description</h5>
+                    <p class="card-text">{{ travel.description }}</p>
+                </div>
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="card bg-light h-100">
+                            <div class="card-body text-center">
+                                <div class="mb-2">
+                                    <i class="fas fa-calendar-alt fa-2x text-primary"></i>
+                                </div>
+                                <h6 class="card-subtitle mb-1">Start Date</h6>
+                                <p class="mb-0">{{ travel.start_date|date:"F j, Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6 col-md-3">
+                        <div class="card bg-light h-100">
+                            <div class="card-body text-center">
+                                <div class="mb-2">
+                                    <i class="fas fa-calendar-check fa-2x text-primary"></i>
+                                </div>
+                                <h6 class="card-subtitle mb-1">End Date</h6>
+                                <p class="mb-0">{{ travel.end_date|date:"F j, Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6 col-md-3">
+                        <div class="card bg-light h-100">
+                            <div class="card-body text-center">
+                                <div class="mb-2">
+                                    <i class="fas fa-clock fa-2x text-primary"></i>
+                                </div>
+                                <h6 class="card-subtitle mb-1">Duration</h6>
+                                <p class="mb-0">{{ travel.end_date|timeuntil:travel.start_date }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6 col-md-3">
+                        <div class="card bg-light h-100">
+                            <div class="card-body text-center">
+                                <div class="mb-2">
+                                    <i class="fas fa-users fa-2x text-primary"></i>
+                                </div>
+                                <h6 class="card-subtitle mb-1">Available Seats</h6>
+                                <p class="mb-0">{{ travel.available_seats }} / {{ travel.total_seats }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h5 class="mb-3">Details</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-map-marker-alt me-2"></i> Destination</span>
+                            <span>{{ travel.destination }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-calendar-day me-2"></i> Departure</span>
+                            <span>{{ travel.start_date|date:"F j, Y" }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-calendar-check me-2"></i> Return</span>
+                            <span>{{ travel.end_date|date:"F j, Y" }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-chair me-2"></i> Available Seats</span>
+                            <span>{{ travel.available_seats }} / {{ travel.total_seats }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-clock me-2"></i> Days Until Departure</span>
+                            <span>{{ travel.start_date|days_until }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Booking Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h3 class="text-primary mb-0">{{ travel.price|format_price }} <small class="text-muted">per person</small></h3>
+                </div>
+                
+                {% if travel.is_fully_booked %}
+                <div class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i> This travel is fully booked!
+                </div>
+                {% elif travel.is_past %}
+                <div class="alert alert-warning" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i> This travel has already started.
+                </div>
+                {% else %}
+                <p class="mb-4">
+                    <i class="fas fa-info-circle me-2"></i> This travel is available for booking. 
+                    There are <strong>{{ travel.available_seats }}</strong> seats available.
+                </p>
+                
+                {% if user.is_authenticated %}
+                <div class="d-grid gap-2">
+                    <a href="{% url 'booking_create' travel.id %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-ticket-alt me-2"></i> Book Now
+                    </a>
+                </div>
+                {% else %}
+                <div class="alert alert-info mb-3" role="alert">
+                    <i class="fas fa-user me-2"></i> Please log in to book this travel.
+                </div>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'login' %}?next={% url 'travel_detail' travel.id %}" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt me-2"></i> Login to Book
+                    </a>
+                    <a href="{% url 'register' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-user-plus me-2"></i> Register
+                    </a>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card shadow">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Travel Features</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <i class="fas fa-check-circle text-success me-2"></i> Professional guide
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-check-circle text-success me-2"></i> Transportation included
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-check-circle text-success me-2"></i> Accommodation
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-check-circle text-success me-2"></i> Breakfast included
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-check-circle text-success me-2"></i> Travel insurance
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="my-4">
+    <a href="{% url 'travel_list' %}" class="btn btn-outline-primary">
+        <i class="fas fa-arrow-left me-2"></i> Back to Travels
+    </a>
+</div>
+{% endblock %}

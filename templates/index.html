@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to Travel Booking Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section py-5 text-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h1 class="display-4 fw-bold mb-4">Discover Your Next Adventure</h1>
+                <p class="lead mb-5">Find and book the perfect travel experience for your next holiday. Hundreds of destinations waiting for you.</p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <a href="{% url 'travel_list' %}" class="btn btn-primary btn-lg px-5 py-3 me-md-2">
+                        <i class="fas fa-search me-2"></i> Find Travels
+                    </a>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg px-5 py-3">
+                        <i class="fas fa-user-plus me-2"></i> Sign Up Now
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Why Choose Our Platform</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary bg-gradient text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
+                            <i class="fas fa-globe-americas fa-2x"></i>
+                        </div>
+                        <h3 class="card-title h5 mb-3">Diverse Destinations</h3>
+                        <p class="card-text">Choose from hundreds of exciting destinations around the world, from popular cities to hidden gems.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary bg-gradient text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
+                            <i class="fas fa-wallet fa-2x"></i>
+                        </div>
+                        <h3 class="card-title h5 mb-3">Best Value</h3>
+                        <p class="card-text">Get the best prices and special deals on travel packages, with transparent pricing and no hidden fees.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary bg-gradient text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
+                            <i class="fas fa-headset fa-2x"></i>
+                        </div>
+                        <h3 class="card-title h5 mb-3">Dedicated Support</h3>
+                        <p class="card-text">Our friendly customer support team is always ready to help with your booking and travel questions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How it works -->
+<section class="how-it-works py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="process-icon bg-primary text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <span class="fw-bold display-6">1</span>
+                    </div>
+                    <h3 class="h5">Browse Travels</h3>
+                    <p>Explore our diverse range of travel destinations and packages.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="process-icon bg-primary text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <span class="fw-bold display-6">2</span>
+                    </div>
+                    <h3 class="h5">Choose Your Trip</h3>
+                    <p>Select the travel package that best fits your needs and preferences.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="process-icon bg-primary text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <span class="fw-bold display-6">3</span>
+                    </div>
+                    <h3 class="h5">Book Securely</h3>
+                    <p>Make your reservation with our easy and secure booking system.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center">
+                    <div class="process-icon bg-primary text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <span class="fw-bold display-6">4</span>
+                    </div>
+                    <h3 class="h5">Enjoy Your Journey</h3>
+                    <p>Pack your bags and get ready for an unforgettable experience!</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'travel_list' %}" class="btn btn-primary btn-lg">Get Started Now</a>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <h2 class="mb-3">Ready to start your next adventure?</h2>
+                <p class="lead mb-0">Join thousands of satisfied travelers who have found their perfect trip.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                {% if user.is_authenticated %}
+                <a href="{% url 'travel_list' %}" class="btn btn-light btn-lg px-4">Explore Destinations</a>
+                {% else %}
+                <a href="{% url 'register' %}" class="btn btn-light btn-lg px-4">Sign Up Today</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

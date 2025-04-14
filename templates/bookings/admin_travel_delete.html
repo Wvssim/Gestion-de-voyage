@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Travel | Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i> Confirm Deletion</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="mb-4">Are you sure you want to delete the following travel?</h5>
+                
+                <div class="alert alert-warning">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <i class="fas fa-exclamation-circle fa-2x"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0"><strong>Warning:</strong> This action cannot be undone. All associated bookings will also be affected.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ travel.name }}</h5>
+                        <h6 class="text-muted mb-3">
+                            <i class="fas fa-map-marker-alt me-1"></i> {{ travel.destination }}
+                        </h6>
+                        <p class="mb-2">
+                            <strong>Dates:</strong> {{ travel.start_date|date:"M d, Y" }} to {{ travel.end_date|date:"M d, Y" }}
+                        </p>
+                        <p class="mb-2">
+                            <strong>Price:</strong> ${{ travel.price }}
+                        </p>
+                        <p class="mb-0">
+                            <strong>Bookings:</strong> {{ travel.bookings.count }}
+                        </p>
+                    </div>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2 d-md-flex">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash-alt me-2"></i> Confirm Delete
+                        </button>
+                        <a href="{% url 'admin_travels' %}" class="btn btn-outline-secondary ms-auto">
+                            <i class="fas fa-arrow-left me-2"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

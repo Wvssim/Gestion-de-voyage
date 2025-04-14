@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Travel | Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Edit Travel</h1>
+    <a href="{% url 'admin_travels' %}" class="btn btn-outline-primary">
+        <i class="fas fa-arrow-left me-2"></i> Back to Travels
+    </a>
+</div>
+
+<div class="card shadow">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">Edit: {{ travel.name }}</h5>
+    </div>
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="id_name" class="form-label">Name</label>
+                    <input type="text" name="name" id="id_name" class="form-control {% if form.name.errors %}is-invalid{% endif %}" value="{{ form.name.value }}" required>
+                    {% if form.name.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.name.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="id_destination" class="form-label">Destination</label>
+                    <input type="text" name="destination" id="id_destination" class="form-control {% if form.destination.errors %}is-invalid{% endif %}" value="{{ form.destination.value }}" required>
+                    {% if form.destination.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.destination.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="id_description" class="form-label">Description</label>
+                <textarea name="description" id="id_description" class="form-control {% if form.description.errors %}is-invalid{% endif %}" rows="5" required>{{ form.description.value }}</textarea>
+                {% if form.description.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.description.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="id_start_date" class="form-label">Start Date</label>
+                    <input type="date" name="start_date" id="id_start_date" class="form-control {% if form.start_date.errors %}is-invalid{% endif %}" value="{{ form.start_date.value|date:'Y-m-d' }}" required>
+                    {% if form.start_date.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.start_date.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="id_end_date" class="form-label">End Date</label>
+                    <input type="date" name="end_date" id="id_end_date" class="form-control {% if form.end_date.errors %}is-invalid{% endif %}" value="{{ form.end_date.value|date:'Y-m-d' }}" required>
+                    {% if form.end_date.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.end_date.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="id_price" class="form-label">Price per Person ($)</label>
+                    <input type="number" name="price" id="id_price" class="form-control {% if form.price.errors %}is-invalid{% endif %}" min="0" step="0.01" value="{{ form.price.value }}" required>
+                    {% if form.price.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.price.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <label for="id_total_seats" class="form-label">Total Seats</label>
+                    <input type="number" name="total_seats" id="id_total_seats" class="form-control {% if form.total_seats.errors %}is-invalid{% endif %}" min="1" value="{{ form.total_seats.value }}" required>
+                    {% if form.total_seats.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.total_seats.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <label for="id_available_seats" class="form-label">Available Seats</label>
+                    <input type="number" name="available_seats" id="id_available_seats" class="form-control {% if form.available_seats.errors %}is-invalid{% endif %}" min="0" value="{{ form.available_seats.value }}" required>
+                    {% if form.available_seats.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.available_seats.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="id_image_url" class="form-label">Image URL (optional)</label>
+                <input type="url" name="image_url" id="id_image_url" class="form-control {% if form.image_url.errors %}is-invalid{% endif %}" value="{{ form.image_url.value|default:'' }}">
+                {% if form.image_url.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.image_url.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="form-text">Enter a URL for an image to represent this travel.</div>
+            </div>
+            
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <div class="d-flex">
+                <button type="submit" class="btn btn-primary me-2">
+                    <i class="fas fa-save me-2"></i> Save Changes
+                </button>
+                <a href="{% url 'admin_travels' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-times me-2"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

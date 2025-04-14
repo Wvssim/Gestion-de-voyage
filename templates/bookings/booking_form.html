@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load booking_extras %}
+
+{% block title %}Book {{ travel.name }} | Travel Booking Platform{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-white">
+                <h2 class="h4 mb-0">Book Your Travel</h2>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <h3>{{ travel.name }}</h3>
+                        <p class="text-muted">
+                            <i class="fas fa-map-marker-alt me-2"></i> {{ travel.destination }}
+                        </p>
+                        <p>
+                            <i class="fas fa-calendar-alt me-2"></i> 
+                            {{ travel.start_date|date:"F j, Y" }} - {{ travel.end_date|date:"F j, Y" }}
+                        </p>
+                        <p>
+                            <i class="fas fa-chair me-2"></i> 
+                            {{ travel.available_seats }} seats available
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <h4 class="text-primary mb-2">{{ travel.price|format_price }}</h4>
+                        <p class="text-muted">per person</p>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <h4 class="mb-3">Booking Details</h4>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="id_num_seats" class="form-label">Number of Seats</label>
+                        <input type="number" name="num_seats" id="id_num_seats" min="1" max="{{ travel.available_seats }}" value="1" class="form-control {% if form.num_seats.errors %}is-invalid{% endif %}" required>
+                        {% if form.num_seats.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.num_seats.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <div class="form-text">{{ form.num_seats.help_text }}</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Total Price</label>
+                        <div class="form-control bg-light" id="total-price">{{ travel.price|format_price }}</div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="mb-3">
+                        <h5>Booking Summary</h5>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <div>
+                                    <h6 class="my-0">{{ travel.name }}</h6>
+                                    <small class="text-muted">{{ travel.start_date|date:"M d" }} - {{ travel.end_date|date:"M d, Y" }}</small>
+                                </div>
+                                <span>{{ travel.price|format_price }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between" id="seats-summary">
+                                <span>Number of seats</span>
+                                <span>1</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Total (USD)</span>
+                                <strong id="summary-total">{{ travel.price|format_price }}</strong>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-check-circle me-2"></i> Confirm Booking
+                        </button>
+                        <a href="{% url 'travel_detail' travel.id %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times-circle me-2"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const numSeatsInput = document.getElementById('id_num_seats');
+        const totalPriceElem = document.getElementById('total-price');
+        const seatsSummaryElem = document.getElementById('seats-summary');
+        const summaryTotalElem = document.getElementById('summary-total');
+        const pricePerSeat = {{ travel.price }};
+        
+        function updateTotalPrice() {
+            const numSeats = parseInt(numSeatsInput.value) || 1;
+            const totalPrice = (pricePerSeat * numSeats).toFixed(2);
+            
+            totalPriceElem.textContent = '$' + totalPrice;
+            seatsSummaryElem.querySelector('span:last-child').textContent = numSeats;
+            summaryTotalElem.textContent = '$' + totalPrice;
+        }
+        
+        numSeatsInput.addEventListener('input', updateTotalPrice);
+        updateTotalPrice(); // Initial calculation
+    });
+</script>
+{% endblock %}

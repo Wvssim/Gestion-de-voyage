@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load booking_extras %}
+
+{% block title %}Cancel Booking | Travel Booking Platform{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i> Confirm Cancellation</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="mb-4">Are you sure you want to cancel this booking?</h5>
+                
+                {% if not booking.can_be_cancelled %}
+                <div class="alert alert-danger mb-4" role="alert">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-ban fa-2x"></i>
+                        </div>
+                        <div>
+                            <h5 class="alert-heading">This booking cannot be cancelled</h5>
+                            <p class="mb-0">The travel date has already passed or the booking has already been cancelled.</p>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-warning" role="alert">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-exclamation-circle fa-2x"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0"><strong>Warning:</strong> This action cannot be undone. Your seats will be returned to the available pool.</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ booking.travel.name }}</h5>
+                        <h6 class="text-muted mb-3">
+                            <i class="fas fa-map-marker-alt me-1"></i> {{ booking.travel.destination }}
+                        </h6>
+                        <p class="mb-2">
+                            <strong>Travel Dates:</strong> {{ booking.travel.start_date|date:"M d, Y" }} to {{ booking.travel.end_date|date:"M d, Y" }}
+                        </p>
+                        <p class="mb-2">
+                            <strong>Booking Date:</strong> {{ booking.booking_date|date:"M d, Y H:i" }}
+                        </p>
+                        <p class="mb-2">
+                            <strong>Number of Seats:</strong> {{ booking.num_seats }}
+                        </p>
+                        <p class="mb-0">
+                            <strong>Total Price:</strong> {{ booking.calculate_total_price|format_price }}
+                        </p>
+                    </div>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2 d-md-flex">
+                        <button type="submit" class="btn btn-danger" {% if not booking.can_be_cancelled %}disabled{% endif %}>
+                            <i class="fas fa-times-circle me-2"></i> Confirm Cancellation
+                        </button>
+                        <a href="{% url 'booking_history' %}" class="btn btn-outline-secondary ms-auto">
+                            <i class="fas fa-arrow-left me-2"></i> Go Back
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
