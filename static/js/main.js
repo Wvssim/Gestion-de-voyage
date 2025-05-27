@@ -1,5 +1,4 @@
-// Travel Booking Platform - Main JavaScript
-
+// Travel Booking Platform - Main JavaScript (Updated)
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize tooltips
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -41,14 +40,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 showAlert('Only ' + maxSeats + ' seats available.', 'warning');
             }
             
-            // If there's a price calculator function, trigger it
             if (typeof updateTotalPrice === 'function') {
                 updateTotalPrice();
             }
         });
     }
 
-    // Travel filter form - auto-submit on change for select fields
+    // Travel filter form - auto-submit on change
     const filterForm = document.querySelector('form[id="filter-form"]');
     if (filterForm) {
         const selects = filterForm.querySelectorAll('select');
@@ -59,17 +57,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Initialize date pickers with default format
+    // Date pickers initialization
     const datePickers = document.querySelectorAll('input[type="date"]');
     datePickers.forEach(picker => {
-        // Add min date attribute to prevent selecting dates in the past for travel dates
         if (picker.id === 'id_start_date' || picker.id === 'id_end_date') {
             const today = new Date().toISOString().split('T')[0];
             picker.setAttribute('min', today);
         }
     });
 
-    // Confirmation popups for delete/cancel actions
+    // Confirmation popups
     const confirmActions = document.querySelectorAll('[data-confirm]');
     confirmActions.forEach(button => {
         button.addEventListener('click', function(e) {
@@ -80,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Function to show custom alerts
+    // Custom alert function
     window.showAlert = function(message, type = 'info') {
         const alertContainer = document.createElement('div');
         alertContainer.className = `alert alert-${type} alert-dismissible fade show`;
@@ -92,33 +89,56 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         const container = document.querySelector('.container');
-        container.insertBefore(alertContainer, container.firstChild);
-        
-        // Auto-dismiss after 5 seconds
-        setTimeout(() => {
-            const bsAlert = new bootstrap.Alert(alertContainer);
-            bsAlert.close();
-        }, 5000);
+        if (container) {
+            container.insertBefore(alertContainer, container.firstChild);
+            
+            setTimeout(() => {
+                const bsAlert = new bootstrap.Alert(alertContainer);
+                bsAlert.close();
+            }, 5000);
+        }
     };
 
-    // Simple counter animation for dashboard stats
+    // Enhanced counter animation with NaN protection
     const counters = document.querySelectorAll('.counter');
     counters.forEach(counter => {
-        const target = parseInt(counter.innerText);
-        let count = 0;
-        const speed = Math.max(10, Math.floor(target / 20)); // Adjust animation speed based on number size
+        // Extract only numbers from text (handles cases like "5 destinations")
+        const rawText = counter.textContent || counter.innerText;
+        const numericValue = rawText.replace(/[^0-9]/g, '');
         
-        const updateCount = () => {
-            const increment = Math.ceil(target / (1000 / speed));
-            if (count < target) {
-                count = Math.min(count + increment, target);
-                counter.innerText = count;
-                setTimeout(updateCount, speed);
-            } else {
-                counter.innerText = target;
-            }
-        };
+        // Safely parse the number (default to 0 if invalid)
+        const target = parseInt(numericValue, 10) || 0;
         
-        updateCount();
+        // Debug log (remove in production)
+        console.log(`Counter debug:`, {
+            rawText: rawText,
+            numericValue: numericValue,
+            parsedTarget: target
+        });
+
+        // Only proceed if we have a valid target
+        if (!isNaN(target)) {
+            let count = 0;
+            const speed = Math.max(10, Math.floor(target / 20));
+            
+            const updateCount = () => {
+                const increment = Math.ceil(target / (1000 / speed));
+                if (count < target) {
+                    count = Math.min(count + increment, target);
+                    counter.textContent = count;
+                    setTimeout(updateCount, speed);
+                } else {
+                    counter.textContent = target;
+                }
+            };
+            
+            // Initialize with 0 before animation starts
+            counter.textContent = '0';
+            setTimeout(updateCount, 100);
+        } else {
+            // Fallback for invalid numbers
+            console.warn('Invalid counter value:', rawText);
+            counter.textContent = '0';
+        }
     });
 });

@@ -1,10 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db import models
 from django.db.models import Count, Sum
 from django.http import JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils import timezone
+
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 from .models import Travel, Booking
 from .forms import BookingForm, TravelForm, TravelSearchForm

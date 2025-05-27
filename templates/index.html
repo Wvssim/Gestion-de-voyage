@@ -3,20 +3,22 @@
 {% block title %}Welcome to Travel Booking Platform{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero-section py-5 text-center">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <h1 class="display-4 fw-bold mb-4">Discover Your Next Adventure</h1>
-                <p class="lead mb-5">Find and book the perfect travel experience for your next holiday. Hundreds of destinations waiting for you.</p>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                    <a href="{% url 'travel_list' %}" class="btn btn-primary btn-lg px-5 py-3 me-md-2">
-                        <i class="fas fa-search me-2"></i> Find Travels
+<!-- Hero Section with Background Image -->
+<section class="hero-section position-relative overflow-hidden">
+    <div class="hero-background" style="background-image: url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+    <div class="hero-overlay"></div>
+    <div class="container position-relative z-index-1 py-5">
+        <div class="row min-vh-80 align-items-center py-5">
+            <div class="col-lg-8 text-white">
+                <h1 class="display-3 fw-bold mb-4">Explore the World with Us</h1>
+                <p class="lead mb-5">Discover unforgettable experiences, hand-picked accommodations, and seamless travel planning all in one place.</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{% url 'travel_list' %}" class="btn btn-primary btn-lg px-4 py-3">
+                        <i class="fas fa-search me-2"></i> Browse All Travels
                     </a>
                     {% if not user.is_authenticated %}
-                    <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg px-5 py-3">
-                        <i class="fas fa-user-plus me-2"></i> Sign Up Now
+                    <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg px-4 py-3">
+                        <i class="fas fa-user-plus me-2"></i> Join for Free
                     </a>
                     {% endif %}
                 </div>
@@ -25,112 +27,223 @@
     </div>
 </section>
 
-<!-- Features Section -->
-<section class="features-section py-5 bg-light">
+<!-- Featured Travels from Database -->
+<section class="featured-travels py-5 bg-light">
     <div class="container">
-        <h2 class="text-center mb-5">Why Choose Our Platform</h2>
+        <div class="section-header d-flex justify-content-between align-items-center mb-5">
+            <h2 class="mb-0">Our Current Travel Offers</h2>
+            <a href="{% url 'travel_list' %}" class="btn btn-outline-primary">View All Travels</a>
+        </div>
+        
         <div class="row g-4">
+            {% for travel in featured_travels %}
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon bg-primary bg-gradient text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
-                            <i class="fas fa-globe-americas fa-2x"></i>
+                <div class="travel-card card border-0 h-100 overflow-hidden shadow-sm">
+                    {% if travel.image %}
+                    <img src="{{ travel.image.url }}" class="card-img-top" alt="{{ travel.destination }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="card-img-top" alt="Default travel image">
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h3 class="h5 mb-0">{{ travel.destination }}</h3>
+                            {% if travel.is_featured %}
+                            <span class="badge bg-success">Featured</span>
+                            {% endif %}
                         </div>
-                        <h3 class="card-title h5 mb-3">Diverse Destinations</h3>
-                        <p class="card-text">Choose from hundreds of exciting destinations around the world, from popular cities to hidden gems.</p>
+                        <p class="text-muted mb-3">{{ travel.short_description|default:"Amazing travel experience" }}</p>
+                        <div class="travel-details mb-3">
+                            <div class="d-flex align-items-center text-muted small mb-2">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                <span>{{ travel.start_date|date:"M d, Y" }} - {{ travel.end_date|date:"M d, Y" }}</span>
+                            </div>
+                            <div class="d-flex align-items-center text-muted small">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                <span>{{ travel.location }}</span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="h6 mb-0">From €{{ travel.price }}</span>
+                            <a href="{% url 'travel_detail' travel.id %}" class="btn btn-sm btn-outline-primary">View Details</a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon bg-primary bg-gradient text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
-                            <i class="fas fa-wallet fa-2x"></i>
-                        </div>
-                        <h3 class="card-title h5 mb-3">Best Value</h3>
-                        <p class="card-text">Get the best prices and special deals on travel packages, with transparent pricing and no hidden fees.</p>
+            {% empty %}
+            <div class="col-12 text-center py-4">
+                <p class="lead">No current travel offers available. Check back soon!</p>
+                <a href="{% url 'travel_list' %}" class="btn btn-primary">Explore Past Travels</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2>Why Travel With Us</h2>
+            <p class="lead text-muted">We make your travel dreams come true</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="feature-item text-center p-4">
+                    <div class="feature-icon mx-auto mb-4 bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-shield-alt fa-2x"></i>
                     </div>
+                    <h3 class="h5 mb-3">Secure Booking</h3>
+                    <p class="text-muted mb-0">Your information is protected with bank-level security.</p>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="feature-icon bg-primary bg-gradient text-white mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
-                            <i class="fas fa-headset fa-2x"></i>
-                        </div>
-                        <h3 class="card-title h5 mb-3">Dedicated Support</h3>
-                        <p class="card-text">Our friendly customer support team is always ready to help with your booking and travel questions.</p>
+            
+            <div class="col-md-3">
+                <div class="feature-item text-center p-4">
+                    <div class="feature-icon mx-auto mb-4 bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-tag fa-2x"></i>
                     </div>
+                    <h3 class="h5 mb-3">Best Price Guarantee</h3>
+                    <p class="text-muted mb-0">Found a better price? We'll match it and give you credit.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="feature-item text-center p-4">
+                    <div class="feature-icon mx-auto mb-4 bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-headset fa-2x"></i>
+                    </div>
+                    <h3 class="h5 mb-3">24/7 Support</h3>
+                    <p class="text-muted mb-0">Our travel experts are available anytime to assist you.</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="feature-item text-center p-4">
+                    <div class="feature-icon mx-auto mb-4 bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-map-marked-alt fa-2x"></i>
+                    </div>
+                    <h3 class="h5 mb-3">Local Experts</h3>
+                    <p class="text-muted mb-0">Get insider tips from our network of local guides.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- How it works -->
-<section class="how-it-works py-5">
+<!-- Testimonials -->
+<section class="testimonials py-5 bg-white">
     <div class="container">
-        <h2 class="text-center mb-5">How It Works</h2>
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="text-center">
-                    <div class="process-icon bg-primary text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                        <span class="fw-bold display-6">1</span>
-                    </div>
-                    <h3 class="h5">Browse Travels</h3>
-                    <p>Explore our diverse range of travel destinations and packages.</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="text-center">
-                    <div class="process-icon bg-primary text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                        <span class="fw-bold display-6">2</span>
-                    </div>
-                    <h3 class="h5">Choose Your Trip</h3>
-                    <p>Select the travel package that best fits your needs and preferences.</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="text-center">
-                    <div class="process-icon bg-primary text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                        <span class="fw-bold display-6">3</span>
-                    </div>
-                    <h3 class="h5">Book Securely</h3>
-                    <p>Make your reservation with our easy and secure booking system.</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="text-center">
-                    <div class="process-icon bg-primary text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
-                        <span class="fw-bold display-6">4</span>
-                    </div>
-                    <h3 class="h5">Enjoy Your Journey</h3>
-                    <p>Pack your bags and get ready for an unforgettable experience!</p>
-                </div>
-            </div>
+        <div class="text-center mb-5">
+            <h2>What Our Travelers Say</h2>
+            <p class="lead text-muted">Don't just take our word for it</p>
         </div>
-        <div class="text-center mt-5">
-            <a href="{% url 'travel_list' %}" class="btn btn-primary btn-lg">Get Started Now</a>
+        
+        <div class="row g-4">
+            {% for testimonial in testimonials %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                                {% if testimonial.user.profile.image %}
+                                <img src="{{ testimonial.user.profile.image.url }}" class="rounded-circle" width="50" height="50" alt="{{ testimonial.user.username }}">
+                                {% else %}
+                                <img src="https://ui-avatars.com/api/?name={{ testimonial.user.username|first }}" class="rounded-circle" width="50" height="50" alt="{{ testimonial.user.username }}">
+                                {% endif %}
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="mb-0">{{ testimonial.user.get_full_name|default:testimonial.user.username }}</h5>
+                                <div class="text-warning small">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= testimonial.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mb-0">"{{ testimonial.comment }}"</p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-4">
+                <p>No testimonials available yet.</p>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </section>
 
 <!-- Call to Action -->
-<section class="cta-section py-5 bg-primary text-white">
-    <div class="container">
+<section class="cta-section py-5 bg-dark text-white position-relative overflow-hidden">
+    <div class="cta-pattern"></div>
+    <div class="container position-relative z-index-1">
         <div class="row align-items-center">
             <div class="col-lg-8 mb-4 mb-lg-0">
-                <h2 class="mb-3">Ready to start your next adventure?</h2>
-                <p class="lead mb-0">Join thousands of satisfied travelers who have found their perfect trip.</p>
+                <h2 class="mb-3">Ready for your next adventure?</h2>
+                <p class="lead mb-0">Sign up today and get exclusive access to special deals and early bird discounts.</p>
             </div>
             <div class="col-lg-4 text-lg-end">
                 {% if user.is_authenticated %}
-                <a href="{% url 'travel_list' %}" class="btn btn-light btn-lg px-4">Explore Destinations</a>
+                <a href="{% url 'travel_list' %}" class="btn btn-light btn-lg px-4">Browse All Travels</a>
                 {% else %}
-                <a href="{% url 'register' %}" class="btn btn-light btn-lg px-4">Sign Up Today</a>
+                <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-4">Join Now - It's Free</a>
                 {% endif %}
             </div>
         </div>
     </div>
 </section>
+
+<style>
+    .hero-section {
+        position: relative;
+        background-size: cover;
+        background-position: center;
+    }
+    
+    .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-size: cover;
+        background-position: center;
+    }
+    
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    
+    .travel-card {
+        transition: transform 0.3s ease;
+    }
+    
+    .travel-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .cta-section {
+        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+    }
+    
+    .cta-pattern {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0.1;
+        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+</style>
 {% endblock %}

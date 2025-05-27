@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import UserRegistrationForm, UserProfileForm
-
+from django.contrib.auth.models import User
 def register(request):
     """Register a new user"""
     if request.method == 'POST':
