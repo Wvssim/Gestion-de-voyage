@@ -51,7 +51,6 @@ Make sure you have the following installed:
 - Package Manager: **uv** or **pip**
 
 ---
-
 ### ⚙️ Installation
 
 Follow these steps to set up the project locally:
@@ -59,4 +58,4 @@ Follow these steps to set up the project locally:
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/ton-utilisateur/gestion-de-voyage.git
+git clone https://github.com/Wvssim/gestion-de-voyage.git
