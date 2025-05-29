@@ -1,15 +1,14 @@
 # GESTION-DE-VOYAGE
 
-
-[![Last Commit](https://img.shields.io/github/last-commit/ton-utilisateur/gestion-de-voyage)](https://github.com/ton-utilisateur/gestion-de-voyage/commits)
-![HTML](https://img.shields.io/badge/html-67.2%25-blue)
-![Languages](https://img.shields.io/github/languages/count/ton-utilisateur/gestion-de-voyage)
+[![Last Commit](https://img.shields.io/github/last-commit/Wvssim/gestion-de-voyage)](https://github.com/Wvssim/gestion-de-voyage/commits)  
+![HTML](https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white)  
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Wvssim&repo=gestion-de-voyage)
 
 ---
 
 ### Built with the tools and technologies:
-![Python](https://img.shields.io/badge/-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Django](https://img.shields.io/badge/-Django-092E20?style=for-the-badge&logo=django)
+![Python](https://img.shields.io/badge/-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)  
+![Django](https://img.shields.io/badge/-Django-092E20?style=for-the-badge&logo=django)  
 ![HTML](https://img.shields.io/badge/-HTML-E34F26?style=for-the-badge&logo=html5)
 
 ---
