@@ -6,7 +6,8 @@
 
 ---
 
-### Built with the tools and technologies:
+### 🛠️ Built With
+
 ![Python](https://img.shields.io/badge/-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)  
 ![Django](https://img.shields.io/badge/-Django-092E20?style=for-the-badge&logo=django)  
 ![HTML](https://img.shields.io/badge/-HTML-E34F26?style=for-the-badge&logo=html5)
@@ -16,28 +17,52 @@
 ## 📚 Table of Contents
 
 - [Overview](#overview)
+- [Screenshots](#screenshots)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [Usage](#usage)
   - [Testing](#testing)
+- [Contact](#contact)
 
 ---
 
 ## 📖 Overview
 
-**TRAVELBOOKER** is a powerful travel booking application designed to simplify itinerary management and enhance user experience for developers and users alike.
+**TRAVELBOOKER** is a powerful travel booking application designed to simplify itinerary management and enhance user experience for both developers and travelers.
 
-### Why TRAVELBOOKER?
+### ✨ Features
 
-This project streamlines travel management by integrating essential functionalities into a cohesive platform. The core features include:
+- 🚀 **Automated Database Setup**: Quickly populate your database with essential data and reduce setup time.
+- 🛠️ **Management Commands**: Use Django’s CLI tools to automate admin tasks efficiently.
+- 🌐 **User-Friendly Interface**: A clean and intuitive front-end for easier travel planning.
+- 📊 **Admin Dashboard**: Gain control with a detailed dashboard showing statistics and booking info.
+- 🔐 **Secure Authentication**: Safe and simple user registration and profile management.
+- 🧩 **Custom Template Filters**: Enhance templates with custom formatting and rendering logic.
 
-- ✨ **Automated Database Setup**: Quickly populate your database with essential data, reducing manual entry and setup time.
-- ⚙️ **Efficient Management Commands**: Simplify administrative tasks with Django’s command-line utilities for seamless operations.
-- 🌐 **Intuitive User Interface**: Engage users with a visually appealing interface that makes travel planning accessible and enjoyable.
-- 📊 **Comprehensive Admin Dashboard**: Gain insights and manage bookings effectively with detailed statistics and user management tools.
-- 🔐 **Secure User Authentication**: Ensure robust user registration and profile management, enhancing security and trust.
-- 🧩 **Dynamic Template Filters**: Improve user engagement with custom filters for real-time content rendering and formatting.
+---
+
+## 🖼️ Screenshots
+
+### 🏠 Homepage
+![Homepage](./Availbl.jpeg)
+
+### 📋 Trip Management
+![Trip Management](.//TravelManagment.jpg)
+
+### 🧑‍💼 Admin Dashboard
+![Admin Dashboard](./AdminDashboard.jpg)
+
+### 🔍 Navigation Bar
+![Navbar](./Navbar.jpg)
+
+
+### ➕ Add New Trip
+![Add Trip](./Ajout.jpg)
+
+### 📆 Booking Page
+![Booking](./Booking.jpg)
+
 
 ---
 
@@ -47,13 +72,12 @@ This project streamlines travel management by integrating essential functionalit
 
 Make sure you have the following installed:
 
-- Programming Language: **Python**
-- Package Manager: **uv** or **pip**
+- **Python 3.x**
+- **pip** or **uv** package manager
 
 ---
-### ⚙️ Installation
 
-Follow these steps to set up the project locally:
+### ⚙️ Installation
 
 1. **Clone the repository**
 
