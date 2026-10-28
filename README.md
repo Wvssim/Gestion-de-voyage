@@ -1,85 +1,60 @@
-# GESTION-DE-VOYAGE
+# Travel Booker
 
-[![Last Commit](https://img.shields.io/github/last-commit/Wvssim/gestion-de-voyage)](https://github.com/Wvssim/gestion-de-voyage/commits)  
-![HTML](https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white)  
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Wvssim&repo=gestion-de-voyage)
+Travel Booker is a Django web application for browsing trips and managing bookings. It includes separate traveler and staff-facing workflows.
 
----
+## Features
 
-### 🛠️ Built With
+- Browse and filter trips by destination, dates, and price
+- Create and cancel bookings and view personal booking history
+- Staff pages for managing trips and reviewing booking statistics
+- Django authentication and role-restricted staff access
 
-![Python](https://img.shields.io/badge/-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)  
-![Django](https://img.shields.io/badge/-Django-092E20?style=for-the-badge&logo=django)  
-![HTML](https://img.shields.io/badge/-HTML-E34F26?style=for-the-badge&logo=html5)
+The project includes screenshots of the main traveler and administration screens.
 
----
+## Technology
 
-## 📚 Table of Contents
+- Python
+- Django 4.2
+- MySQL
+- Django templates, HTML, and CSS
 
-- [Overview](#overview)
-- [Screenshots](#screenshots)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Usage](#usage)
-  - [Testing](#testing)
-- [Contact](#contact)
+## Local setup
 
----
+### Requirements
 
-## 📖 Overview
+- Python 3
+- MySQL server and development headers required by `mysqlclient`
 
-**TRAVELBOOKER** is a powerful travel booking application designed to simplify itinerary management and enhance user experience for both developers and travelers.
+Create a MySQL database and configure the database connection in the Django settings for your local environment. Do not reuse the repository's development credentials in a deployed environment.
 
-### ✨ Features
+### Install and run
 
-- 🚀 **Automated Database Setup**: Quickly populate your database with essential data and reduce setup time.
-- 🛠️ **Management Commands**: Use Django’s CLI tools to automate admin tasks efficiently.
-- 🌐 **User-Friendly Interface**: A clean and intuitive front-end for easier travel planning.
-- 📊 **Admin Dashboard**: Gain control with a detailed dashboard showing statistics and booking info.
-- 🔐 **Secure Authentication**: Safe and simple user registration and profile management.
-- 🧩 **Custom Template Filters**: Enhance templates with custom formatting and rendering logic.
-
----
-
-## 🖼️ Screenshots
-
-### 🏠 Homepage
-![Homepage](./Availbl.jpeg)
-
-### 📋 Trip Management
-![Trip Management](.//TravelManagment.jpg)
-
-### 🧑‍💼 Admin Dashboard
-![Admin Dashboard](./AdminDashboard.jpg)
-
-### 🔍 Navigation Bar
-![Navbar](./Navbar.jpg)
-
-
-### ➕ Add New Trip
-![Add Trip](./Ajout.jpg)
-
-### 📆 Booking Page
-![Booking](./Booking.jpg)
-
-
----
-
-## 🚀 Getting Started
-
-### 🧰 Prerequisites
-
-Make sure you have the following installed:
-
-- **Python 3.x**
-- **pip** or **uv** package manager
-
----
-
-### ⚙️ Installation
-
-1. **Clone the repository**
+From the repository root:
 
 ```bash
-git clone https://github.com/Wvssim/gestion-de-voyage.git
+python -m venv .venv
+```
+
+Activate the environment, then install the pinned dependencies:
+
+```bash
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
+```
+
+The development server prints its local URL when it starts. If the sample-data script is used, treat its accounts and data as local demo fixtures only; never expose them on a public deployment.
+
+## Screenshots
+
+![Trip listing](./Availbl.jpeg)
+
+![Trip management](./TravelManagment.jpg)
+
+![Administration dashboard](./AdminDashboard.jpg)
+
+![Navigation](./Navbar.jpg)
+
+![Add a trip](./Ajout.jpg)
+
+![Booking](./Booking.jpg)
